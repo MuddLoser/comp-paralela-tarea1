@@ -1,6 +1,6 @@
 # Multiplicación de Matrices: Algoritmos Secuenciales y Paralelos
 ## Para ejecutar los algoritmos secuenciales
-```
+```bash
 # Compilar el código
 # Usamos -O3 para habilitar optimizaciones de rendimiento y -std=c++17 por compatibilidad
 g++ -O3 -std=c++17 -o program scriptmultis.cpp
