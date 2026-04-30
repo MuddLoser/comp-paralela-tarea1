@@ -1,6 +1,6 @@
 # Multiplicación de Matrices: Algoritmos Secuenciales y Paralelos
 ## Para ejecutar los algoritmos secuenciales
-# Compilar el código
+```# Compilar el código
 # Usamos -O3 para habilitar optimizaciones de rendimiento y -std=c++17 por compatibilidad
 g++ -O3 -std=c++17 -o program scriptmultis.cpp
 
@@ -17,7 +17,7 @@ g++ -O3 -std=c++17 -o bench_colcura scriptmultis.cpp
 nohup ./bench_colcura > estadisticas_grupo3.txt &
 
 # 3. Ver el avance del archivo de estadísticas
-tail -f estadisticas_grupo3.txt
+tail -f estadisticas_grupo3.txt```
 
 ## Para ejecutar los algoritmos paralelos
 
