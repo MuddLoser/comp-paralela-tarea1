@@ -1,6 +1,6 @@
 /*
  * gcc -O2 -fopenmp -std=c99 -o matmul2 matmul2.c -lm
- * uso: ./matmul2 [N]   (n debe ser potencia de 2, defecto 512)
+ * uso: ./matmul2 [N]   (N debe ser potencia de 2, defecto 512)
  */
 #include <stdio.h>
 #include <stdlib.h>
@@ -46,18 +46,26 @@ static void mseq_naive(const double*A,const double*B,double*C,int n){
 /* submatrices / paraleliza los bloques
    collapse(2) reparte pares (bi,bj) entre hilos.
    Cada par posee una region disjunta de C */
-static void blk_par(const double*A,const double*B,double*C,int n,int d){
-    (void)d; mzero(C,n);
+static void blk_par(const double *A, const double *B, double *C, int n, int d)
+{
+    (void)d;
+    mzero(C, n);
+
     #pragma omp parallel for collapse(2) schedule(dynamic) \
-        shared(A,B,C) firstprivate(n) default(none)
-    for(int bi=0;bi<n;bi+=BS) for(int bj=0;bj<n;bj+=BS)
-        for(int bk=0;bk<n;bk+=BS){
-            int il=bi+BS<n?bi+BS:n, kl=bk+BS<n?bk+BS:n, jl=bj+BS<n?bj+BS:n;
-            for(int i=bi;i<il;i++) for(int k=bk;k<kl;k++){
-                double a=A[i*n+k];
-                for(int j=bj;j<jl;j++) C[i*n+j]+=a*B[k*n+j];
+        shared(A, B, C) firstprivate(n) default(none)
+    for (int bi = 0; bi < n; bi += BS)
+        for (int bj = 0; bj < n; bj += BS)
+            for (int bk = 0; bk < n; bk += BS) {
+                int il = bi+BS < n ? bi+BS : n;
+                int kl = bk+BS < n ? bk+BS : n;
+                int jl = bj+BS < n ? bj+BS : n;
+                for (int i = bi; i < il; i++)
+                    for (int k = bk; k < kl; k++) {
+                        double a = A[i*n+k];
+                        for (int j = bj; j < jl; j++)
+                            C[i*n+j] += a * B[k*n+j];
+                    }
             }
-        }
 }
 
 /* Nucleo Strassen
